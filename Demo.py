@@ -13,36 +13,53 @@ def write_record_csv(reps, sets, course, duration):
         csv_file.writerow(data)
 
 def StartTrain(reps: int = 25, sets: int = 1, m: int = 1, w: int = 1, remind: int = 10, breaktime: float = 1, course: str = '自由练习'):
-    os.system('say "现在开始"')
-    time.sleep(5)
-    starttime: float = time.time()
-    for r in range(sets):
-        for t in range(reps):
-            print(t + 1, end="\t")
-            os.system('say "下"')
-            time.sleep(m)
-            os.system('say "坚持"')
-            time.sleep(w)
-            os.system('say "起"')
-            time.sleep(m)
+    try:
+        # Keyboard_Listener(on_press, on_release)
+        os.system('say "现在开始"')
+        # time.sleep(5)
+        global starttime
+        starttime = time.time()
+        global r
+        global t
+        r = 0
+        t = 0
+        for r in range(sets):
+            for t in range(reps):
+                print(t + 1, end="\t")
+                os.system('say "下"')
+                time.sleep(m)
+                os.system('say "坚持"')
+                time.sleep(w)
+                os.system('say "起"')
+                time.sleep(m)
 
-            if (t + 1) % remind == 0:
-                os.system('say "已经完成 %s"' % str(t + 1))
-        os.system('say "休闲 %s 分钟"' % breaktime)
-        sleep_time = breaktime * 60 - 10
-        if sleep_time > 0:
-            time.sleep(breaktime * 60 - 10)  # 如果时间小于10秒
+                if (t + 1) % remind == 0:
+                    os.system('say "已经完成 %s"' % str(t + 1))
+            os.system('say "休闲 %s 分钟"' % breaktime)
+            sleep_time = breaktime * 60 - 10
+            if sleep_time > 0:
+                time.sleep(breaktime * 60 - 10)  # 如果时间小于10秒
 
-        if 0 < sets - r - 1:
-            os.system('say "即将开始，还剩余 %s 次"' % str(sets - r - 1))
-        else:
-            duration = round((time.time() - starttime) / 60, 1)
-            print(duration)
-            os.system('say "本次锻炼已完成，共锻炼 %s 分钟"' % duration)
-            write_record_csv(reps=reps, sets=sets, course=course, duration=duration)
-            break
-        print("")
+            if 0 < sets - r - 1:
+                os.system('say "即将开始，还剩余 %s 次"' % str(sets - r - 1))
+            else:
+                duration = round((time.time() - starttime) / 60, 1)
+                print(duration)
+                os.system('say "本次锻炼已完成，共锻炼 %s 分钟"' % duration)
+                write_record_csv(reps=reps, sets=sets, course=course, duration=duration)
+                break
+            print("")
+    except KeyboardInterrupt:
+        print('ERR')
+        duration = round((time.time() - starttime) / 60, 1)
+        print(duration)
+        write_record_csv(reps=reps * r + t, sets= 1, course=course, duration=duration)
 
+
+    except Exception as err:
+        print('未知错误 %s' % (err))
+    finally:
+        print('Done')
 
 if __name__ == '__main__':
 
@@ -52,7 +69,7 @@ if __name__ == '__main__':
     # StartTrain(20, 2, 1, 1, 10, 0.5, '窄距俯卧撑')
     # StartTrain(20, 2, 1, 1, 10, 0.5, '单臂俯卧撑')
     #深蹲系列
-    StartTrain(10, 2, 1, 1, 10, 0.5, '标准深蹲')
+    StartTrain(20, 2, 1, 1, 10, 0.5, '标准深蹲')
     # StartTrain(20, 2, 1, 1, 10, 0.5, '窄距深蹲')
     # StartTrain(20, 2, 1, 1, 10, 0.5, '单腿深蹲')
     #引体向上
