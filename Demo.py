@@ -4,14 +4,15 @@ import os
 import time
 import csv
 
+path = 'exerice_recording.csv'
 
 def write_record_csv(reps, sets, course, duration):
-    path = 'exerice_recording.csv'
     with open(path, 'a', newline='', encoding='utf-8-sig') as file:
         csv_file = csv.writer(file)
         # data = ['时间戳', '日期时间', '锻炼项目', '个数', '组数', '持续时间']
         data = [time.time(), time.strftime('%Y-%m-%d %H:%M:%S'), course, reps, sets, duration]
         csv_file.writerow(data)
+
 
 
 def StartTrain(reps: int = 25, sets: int = 1, m: int = 1, w: int = 1, remind: int = 10, breaktime: float = 1,
@@ -63,6 +64,7 @@ def StartTrain(reps: int = 25, sets: int = 1, m: int = 1, w: int = 1, remind: in
         print('Done')
 
 
+
 def WaitTime(t1=0):
     if t1 == 0:
         t = input("请输入等待开始时间(默认为5秒):")
@@ -71,11 +73,68 @@ def WaitTime(t1=0):
     time.sleep(t1)
 
 
+
+#锻炼情况概要
+#TODO 后续可以增加每项运动的统计分析 主要针对 手臂、腿、腰腹、背部
+
+#TODO 锻炼周期统计 开始结束时间，最近一周、一个月等
+
+#TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
+def Fit_Summary():
+    a = [] #日期
+    b = []  #日期&单项计时
+    c = 0 #计时求和用
+    tongji = []
+    with open(path)as f:
+        f_csv = csv.reader(f)
+        for row in f_csv:
+            a.append(row[1][:10])
+            b.append([row[1][:10],row[5]])
+        dt = list(set(a))   #日期除出重并重新变为列表
+        dt.sort(reverse=True)
+        # print(dt[0])
+        dt.remove('日期时间')
+        a = dt  #除重后的日期列表
+        #对日期锻炼时间求和
+        for a1 in a:
+            for b1 in b:
+                if a1 == b1[0]:
+                    c += float(b1[1])
+            tongji.append([a1, c])
+            c = 0 #统计时间清零
+        ave = 0
+        day = 0
+        for t in tongji:
+            day += 1
+            ave += t[1]
+        ave = ave/day
+        todayt = tongji[0][1]
+        print("今天锻炼了：%.2f 分钟，平均 %.2f 分钟，共锻炼: %d 天" % (todayt, ave, day)) #TODO 自由今天锻炼了日期才会更新，不然日期为最近一天，可以增加对统计时间和NOW判断
+        ca = ave - todayt
+        if ca > 0:
+            print("距离平均时间差 %.2f 分钟, 快看看在再哪里可以再锻炼一下" % ca) #TODO 给出锻炼哪方面的建议？
+        elif ca < 0:
+            print("超过平均时间差 %.2f 分钟" % abs(ca))
+        else:
+            print("和平均水平一致") #TODO 是否要去除今天的时间，今天时间低的话会拉低平均锻炼时间
+
+        #统计详情
+        # for t in tongji:
+        #     print(t)
+        #展示最近5天的统计详情
+        for t in tongji[:5]:
+            print(t)
+
+#TODO 为保证均衡锻炼，对缺乏部分提醒功能
+def Reminder():
+    pass
+
 if __name__ == '__main__':
-    WaitTime(2)
-    print('done')
+    # WaitTime(5)
+    Fit_Summary()
+
     # 俯卧撑系列
-    # StartTrain(20, 3, 1, 1, 10, 0.5, '斜上俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
+    # StartTrain(10, 2, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
 
     # 深蹲系列
     # StartTrain(20, 4, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
@@ -84,11 +143,11 @@ if __name__ == '__main__':
     # StartTrain(10, 2, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
 
     # 举腿系列
-    # StartTrain(20, 2, 1, 1, 10, 0.5, '平卧抬膝')  #平卧抬膝3-35   平卧屈举腿3-30   平卧蛙举腿3-25   平卧直举腿2-20
+    # StartTrain(21, 2, 1, 1, 10, 0.5, '平卧抬膝')  #平卧抬膝3-35   平卧屈举腿3-30   平卧蛙举腿3-25   平卧直举腿2-20
     # StartTrain(15, 2, 1, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
 
     # 桥系列
-    # StartTrain(30, 4, 1, 1, 10, 0.5, '短桥')    #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
+    # StartTrain(12, 2, 1, 1, 10, 0.5, '直桥')    #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
 
     # 倒立系列
     '''
