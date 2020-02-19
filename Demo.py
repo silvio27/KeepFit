@@ -14,6 +14,27 @@ def write_record_csv(reps, sets, course, duration):
         csv_file.writerow(data)
 
 
+#日期格式转换为时间戳,True表示23:59:59
+def DateToTimeStramp(date, whole_day: bool = False):
+    # 判断是否为日期格式
+    if is_valid_date(date):
+        bb = int(time.mktime(time.strptime(date, "%Y-%m-%d")))
+        if whole_day != 0: bb = bb + 24 * 60 * 60 - 1
+        # print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(bb)))
+        return bb
+    else:
+        print("日期格式转换为时间戳错误，DateToTimeStramp")
+
+
+# 判断是否是一个有效的日期字符串
+def is_valid_date(str_date):
+    try:
+        time.strptime(str_date, "%Y-%m-%d")
+        return True
+    except Exception:
+        print("日期格式错误请重新输入")
+        return False
+
 
 def StartTrain(reps: int = 25, sets: int = 1, m: int = 1, w: int = 1, remind: int = 10, breaktime: float = 1,
                course: str = '自由练习'):
@@ -64,7 +85,6 @@ def StartTrain(reps: int = 25, sets: int = 1, m: int = 1, w: int = 1, remind: in
         print('Done')
 
 
-
 def WaitTime(t1=0):
     if t1 == 0:
         t = input("请输入等待开始时间(默认为5秒):")
@@ -76,88 +96,121 @@ def WaitTime(t1=0):
 
 #锻炼情况概要
 #TODO 后续可以增加每项运动的统计分析 主要针对 手臂、腿、腰腹、背部
+# TODO 锻炼周期统计 开始结束时间，最近一周、一个月等
+# TODO 是否要去除今天的时间，今天时间低的话会拉低平均锻炼时间
+#TODO 自由今天锻炼了日期才会更新，不然日期为最近一天，可以增加对统计时间和NOW判断
 
-#TODO 锻炼周期统计 开始结束时间，最近一周、一个月等
-
-#TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
-def Fit_Summary():
+def Fit_Summary(startdate = "1900-01-01", enddate = "2099-12-31", with_today: bool = True): #周期：3d 5d 7d 14d 30d etc
+    # TODO 统计总的平均时间，包含和不包含今天，再用一个函数调用统计，本函数只做一段周期内的统计
     a = [] #日期
     b = []  #日期&单项计时
     c = 0 #计时求和用
+    ave = 0
     tongji = []
+    m = []
+    raw_data = []
+    Summary_Startdate = DateToTimeStramp(startdate, False)
+    Summary_enddate = DateToTimeStramp(enddate, with_today)
     with open(path)as f:
         f_csv = csv.reader(f)
-        for row in f_csv:
-            a.append(row[1][:10])
-            b.append([row[1][:10],row[5]])
-        dt = list(set(a))   #日期除出重并重新变为列表
-        dt.sort(reverse=True)
-        # print(dt[0])
-        dt.remove('日期时间')
-        a = dt  #除重后的日期列表
-        #对日期锻炼时间求和
-        for a1 in a:
-            for b1 in b:
-                if a1 == b1[0]:
-                    c += float(b1[1])
-            tongji.append([a1, c])
-            c = 0 #统计时间清零
-        ave = 0
-        day = 0
-        for t in tongji:
-            day += 1
-            ave += t[1]
-        ave = ave/day
-        todayt = tongji[0][1]
-        print("今天锻炼了：%.2f 分钟，平均 %.2f 分钟，共锻炼: %d 天" % (todayt, ave, day)) #TODO 自由今天锻炼了日期才会更新，不然日期为最近一天，可以增加对统计时间和NOW判断
-        ca = ave - todayt
-        if ca > 0:
-            print("距离平均时间差 %.2f 分钟, 快看看在再哪里可以再锻炼一下" % ca) #TODO 给出锻炼哪方面的建议？
-        elif ca < 0:
-            print("超过平均时间差 %.2f 分钟" % abs(ca))
-        else:
-            print("和平均水平一致") #TODO 是否要去除今天的时间，今天时间低的话会拉低平均锻炼时间
+        #去除标题行
+        next(f_csv)
+        # 时间戳处理
+        for l in f_csv:
+            if Summary_Startdate <= float(l[0]) <= Summary_enddate:
+                raw_data.append(l)
+                a.append([time.strftime('%Y-%m-%d', time.localtime(float(l[0]))),l[5]])
 
-        #统计详情
-        # for t in tongji:
-        #     print(t)
-        #展示最近5天的统计详情
-        for t in tongji[:5]:
-            print(t)
+        for r in raw_data:
+            m.append(time.strftime('%Y-%m-%d', time.localtime(float(r[0]))))
+        dt = list(set(m))   #日期除出重并重新变为列表
+        dt.sort(reverse=True)
+        # print(dt)
+        # #对日期锻炼时间求和
+        # print(a)
+        for d in dt:
+            for a1 in a:
+                if d == a1[0]:
+                    c += float(a1[1])
+                    ave += float(a1[1])
+            b.append([d,round(c, 1)])
+            c = 0 #统计时间清零
+
+        work_detail = b
+        workdays = len(dt)
+        ave_time = round(ave/len(dt),2)
+
+        Work_data = {
+        'work_detail' : work_detail,
+        'workdays' : workdays,
+        'ave_time' : ave_time,
+        }
+        return Work_data
+
+
+
+        # print("今天锻炼了：%.2f 分钟，平均 %.2f 分钟，共锻炼: %d 天" % (todayt, ave, day))
+        # ca = ave - todayt
+        # if ca > 0:
+        #     print("距离平均时间差 %.2f 分钟, 快看看在再哪里可以再锻炼一下" % ca) #TODO 给出锻炼哪方面的建议？
+        # elif ca < 0:
+        #     print("超过平均时间差 %.2f 分钟" % abs(ca))
+        # else:
+        #     print("和平均水平一致")
+
+
 
 #TODO 为保证均衡锻炼，对缺乏部分提醒功能
-def Reminder():
+def Reminder_Do_More():
     pass
 
+#TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
+def Reminder_Time(t: int = 0):
+    hour = int(time.strftime('%H'))
+    startdate = '1900-01-01'
+    today = time.strftime('%Y-%m-%d')
+    if hour >= t or hour == 0:
+        today_detail = Fit_Summary(startdate=today, enddate=today, with_today=True)
+        before_today_detail = Fit_Summary(startdate=startdate, enddate=today, with_today=False)
+
+        print("今天的锻炼时间：" + str(today_detail['ave_time']))
+        print("平均锻炼时间：" + str(before_today_detail['ave_time']))
+
+
+
 if __name__ == '__main__':
+    Reminder_Time()
+    # Fit_Summary_without_Today()
     # WaitTime(5)
-    Fit_Summary()
 
     # 俯卧撑系列
     # StartTrain(10, 2, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
 
+
+
     # 深蹲系列
-    # StartTrain(20, 4, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
+    # StartTrain(25, 2, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
 
     # 引体向上
     # StartTrain(10, 2, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
 
     # 举腿系列
-    # StartTrain(21, 2, 1, 1, 10, 0.5, '平卧抬膝')  #平卧抬膝3-35   平卧屈举腿3-30   平卧蛙举腿3-25   平卧直举腿2-20
+    # StartTrain(20, 2, 1, 1, 10, 0.5, '平卧抬膝')  #平卧抬膝3-35   平卧屈举腿3-30   平卧蛙举腿3-25   平卧直举腿2-20
     # StartTrain(15, 2, 1, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
 
     # 桥系列
     # StartTrain(12, 2, 1, 1, 10, 0.5, '直桥')    #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
 
     # 倒立系列
-    '''
+
     # Todo
     #   StartTrain(10, 2, 1, 1, 10, 0.5, '靠墙顶立') 2分钟  乌鸦式1分钟  靠墙倒立2分钟
 
     # StartTrain(20, 2, 1, 1, 10, 0.5, '半倒立撑')
     # StartTrain(15, 2, 1, 1, 10, 0.5, '标准倒立撑') #窄距倒立撑2-12 偏重倒立撑2-10 单臂倒立撑你2-8 杠杆倒立撑2-6 单臂倒立撑2-5
-    '''
+
 
     # StartTrain(1, 1, 1, 10, 1, 0, '测试用')
     # 手动记录工作
     # write_record_csv(reps=20, sets=2, course='平卧抬膝', duration=3)
+    # Reminder_Time(10)
