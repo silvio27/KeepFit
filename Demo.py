@@ -72,6 +72,7 @@ def StartTrain(reps: int = 25, sets: int = 2, m: int = 1, w: int = 1, remind: in
 
             if 0 < sets - r - 1:
                 os.system('say "即将开始，还剩余 %s 次"' % str(sets - r - 1))
+                time.sleep(1)
             else:
                 duration = round((time.time() - starttime) / 60, 1)
                 print(duration)
@@ -101,7 +102,7 @@ def Fit_Summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
     a = []  # 日期
     b = []  # 日期&单项计时
     c = 0  # 计时求和用
-    ave = 0
+    totally_time = 0
     m = []
     raw_data = []
     Summary_Startdate = DateToTimeStramp(startdate, False)
@@ -126,15 +127,15 @@ def Fit_Summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
             for a1 in a:
                 if d == a1[0]:
                     c += float(a1[1])
-                    ave += float(a1[1])
+                    totally_time += float(a1[1])
             b.append([d, round(c, 1)])
             c = 0  # 统计时间清零
 
         work_detail = b
         workdays = len(dt)
-        ave_time = round(ave / len(dt), 2)
+        ave_time = totally_time / len(dt)
 
-        Work_data = dict(work_detail=work_detail, workdays=workdays, ave_time=ave_time)
+        Work_data = dict(work_detail=work_detail, workdays=workdays, ave_time=ave_time, totally_time = totally_time)
         return Work_data
 
 
@@ -145,7 +146,7 @@ def Reminder_Do_More():
 
 # TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
 
-def Reminder_Time(tt: int = 0):
+def Reminder_Time(tt: int = 0, recent_day: int = 5):
     hour = int(time.strftime('%H'))
     startdate: str = '1900-01-01'
     today = time.strftime('%Y-%m-%d')
@@ -153,20 +154,20 @@ def Reminder_Time(tt: int = 0):
         today_detail = Fit_Summary(startdate=today, enddate=today, with_today=True)
         before_today_detail = Fit_Summary(startdate=startdate, enddate=today, with_today=False)
 
-        print("今天的锻炼时间：" + str(today_detail['ave_time']))
-        print("平均锻炼时间：" + str(before_today_detail['ave_time']))
-        for i in before_today_detail['work_detail']:
+        print("今天的锻炼时间：%.2f 分钟" % (today_detail['ave_time']))
+        print("平均锻炼时间：%.2f 分钟，共计 %.2f 分钟 " % (before_today_detail['ave_time'], before_today_detail['totally_time']))
+        for i in before_today_detail['work_detail'][:recent_day]:
             print(i)
 
 
 if __name__ == '__main__':
 
-    WaitTime(5)
+    # WaitTime(5)
     # StartTrain()
     # 俯卧撑系列
     # StartTrain(10, 2, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
     # 深蹲系列
-    StartTrain(25, 2, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
+    # StartTrain(25, 2, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
     # 引体向上
     # StartTrain(10, 2, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
     # 举腿系列
@@ -174,6 +175,7 @@ if __name__ == '__main__':
     # StartTrain(15, 2, 1, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
     # 桥系列
     # StartTrain(20, 3, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
+    # StartTrain (10, 2, 1, 1, 10, 0.5, '直桥')
 
     Reminder_Time()
 
