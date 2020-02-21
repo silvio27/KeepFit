@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import os
@@ -5,6 +6,7 @@ import time
 import csv
 
 path = 'exerice_recording.csv'
+starttime = time.time()
 
 def write_record_csv(reps, sets, course, duration):
     with open(path, 'a', newline='', encoding='utf-8-sig') as file:
@@ -15,7 +17,7 @@ def write_record_csv(reps, sets, course, duration):
 
 
 # 日期格式转换为时间戳,True表示23:59:59
-def DateToTimeStramp(date, whole_day: bool = False):
+def date_to_timestramp(date, whole_day: bool=False):
     # 判断是否为日期格式
     if is_valid_date(date):
         TtoS = int(time.mktime(time.strptime(date, "%Y-%m-%d")))
@@ -35,7 +37,7 @@ def is_valid_date(str_date):
         print("日期格式错误请重新输入")
         return False
 
-def WaitTime(t1 = 0):
+def wait_time(t1=0):
     if t1 == 0:
         input_time = input("请输入等待开始时间(默认为5秒):")
         if type(input_time) != int or input_time == "":
@@ -44,11 +46,12 @@ def WaitTime(t1 = 0):
 
 
 
-def StartTrain(reps: int = 25, sets: int = 2, m: int = 1, w: int = 1, remind: int = 10, breaktime: float = 1, course: str = '自由练习'):
+def start_train(reps: int=25, sets: int=2, um: int=1, dm: int=1, w: int=1, remind: int=10, breaktime: float=1, course: str= '自由练习'):
+
+
     try:
         os.system('say "现在开始"')
-        global starttime
-        starttime = time.time()
+
         global r
         global t
         # r = 0
@@ -57,11 +60,11 @@ def StartTrain(reps: int = 25, sets: int = 2, m: int = 1, w: int = 1, remind: in
             for t in range(reps):
                 print(t + 1, end="\t")
                 os.system('say "下"')
-                time.sleep(m)
+                time.sleep(um)
                 os.system('say "坚持"')
                 time.sleep(w)
                 os.system('say "起"')
-                time.sleep(m)
+                time.sleep(dm)
                 if (t + 1) % remind == 0:
                     os.system('say "已经完成 %s"' % str(t + 1))
 
@@ -97,7 +100,7 @@ def StartTrain(reps: int = 25, sets: int = 2, m: int = 1, w: int = 1, remind: in
 # TODO 后续可以增加每项运动的统计分析 主要针对 手臂、腿、腰腹、背部
 # TODO 锻炼周期统计 开始结束时间，最近一周、一个月等 周期：3d 5d 7d 14d 30d etc
 
-def Fit_Summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool = True):
+def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool=True):
     # TODO 统计总的平均时间，包含和不包含今天，再用一个函数调用统计，本函数只做一段周期内的统计
     a = []  # 日期
     b = []  # 日期&单项计时
@@ -105,8 +108,8 @@ def Fit_Summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
     totally_time = 0
     m = []
     raw_data = []
-    Summary_Startdate = DateToTimeStramp(startdate, False)
-    Summary_enddate = DateToTimeStramp(enddate, with_today)
+    Summary_Startdate = date_to_timestramp(startdate, False)
+    Summary_enddate = date_to_timestramp(enddate, with_today)
     with open(path)as f:
         f_csv = csv.reader(f)
         # 去除标题行
@@ -141,18 +144,18 @@ def Fit_Summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
 
 # TODO 为保证均衡锻炼，对缺乏部分提醒功能
 
-def Reminder_Do_More():
+def reminder_do_more():
     pass
 
 # TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
 
-def Reminder_Time(tt: int = 0, recent_day: int = 5):
+def reminder_time(tt: int=0, recent_day: int=5):
     hour = int(time.strftime('%H'))
     startdate: str = '1900-01-01'
     today = time.strftime('%Y-%m-%d')
     if hour >= tt or hour == 0:
-        today_detail = Fit_Summary(startdate=today, enddate=today, with_today=True)
-        before_today_detail = Fit_Summary(startdate=startdate, enddate=today, with_today=False)
+        today_detail = fit_summary(startdate=today, enddate=today, with_today=True)
+        before_today_detail = fit_summary(startdate=startdate, enddate=today, with_today=False)
 
         print("今天的锻炼时间：%.2f 分钟" % (today_detail['ave_time']))
         print("平均锻炼时间：%.2f 分钟，共计 %.2f 分钟 " % (before_today_detail['ave_time'], before_today_detail['totally_time']))
@@ -162,32 +165,32 @@ def Reminder_Time(tt: int = 0, recent_day: int = 5):
 
 if __name__ == '__main__':
 
-    # WaitTime(5)
-    # StartTrain()
+    wait_time(5)
+    # start_train()
     # 俯卧撑系列
-    # StartTrain(10, 2, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
+    # start_train(12, 1, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
     # 深蹲系列
-    # StartTrain(25, 2, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
-    # 引体向上
-    # StartTrain(10, 2, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
+    start_train(25, 2, 1, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
     # 举腿系列
-    # StartTrain(20, 2, 1, 1, 10, 0.5, '平卧抬膝')  #平卧抬膝3-35   平卧屈举腿3-30   平卧蛙举腿3-25   平卧直举腿2-20
-    # StartTrain(15, 2, 1, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
+    # start_train(12, 2, 2, 2, 1, 10, 0.5, '平卧屈举腿')  #平卧抬膝3-35   平卧屈举腿3-30    # start_train(15, 2, 2, 2, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
+    # start_train(8, 1, 2, 4, 1, 10, 0.5, '平卧蛙举腿') #平卧蛙举腿3-25   平卧直举腿1-5 to 2-20
     # 桥系列
-    # StartTrain(20, 3, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
-    # StartTrain (10, 2, 1, 1, 10, 0.5, '直桥')
+    # start_train(30, 3, 1, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
+    # start_train (10, 2, 1, 1, 1, 10, 0.5, '直桥')
+    # 引体向上
+    # start_train(10, 2, 1, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
 
-    Reminder_Time()
+    reminder_time()
 
     # 倒立系列
 
     # Todo
-    #   StartTrain(10, 2, 1, 1, 10, 0.5, '靠墙顶立') 2分钟  乌鸦式1分钟  靠墙倒立2分钟
+    #   start_train(10, 2, 1, 1, 1, 10, 0.5, '靠墙顶立') 2分钟  乌鸦式1分钟  靠墙倒立2分钟
 
-    # StartTrain(20, 2, 1, 1, 10, 0.5, '半倒立撑')
-    # StartTrain(15, 2, 1, 1, 10, 0.5, '标准倒立撑') #窄距倒立撑2-12 偏重倒立撑2-10 单臂倒立撑你2-8 杠杆倒立撑2-6 单臂倒立撑2-5
+    # start_train(20, 2, 1, 1, 1, 10, 0.5, '半倒立撑')
+    # start_train(15, 2, 1, 1, 1, 10, 0.5, '标准倒立撑') #窄距倒立撑2-12 偏重倒立撑2-10 单臂倒立撑你2-8 杠杆倒立撑2-6 单臂倒立撑2-5
 
-    # StartTrain(1, 1, 1, 10, 1, 0, '测试用')
+    # start_train(1, 1, 1, 1, 10, 1, 0, '测试用')
     # 手动记录工作
     # write_record_csv(reps=20, sets=2, course='平卧抬膝', duration=3)
 
