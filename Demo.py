@@ -10,6 +10,7 @@ starttime = time.time()
 
 
 def write_record_csv(reps, sets, course, duration):
+    """将练习记录写入CSV文档中"""
     with open(path, 'a', newline='', encoding='utf-8-sig') as file:
         csv_file = csv.writer(file)
         # data = ['时间戳', '日期时间', '锻炼项目', '个数', '组数', '持续时间']
@@ -129,6 +130,7 @@ def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
         next(f_csv)
         # 时间戳处理
         for l in f_csv:
+            if l == []:continue # 如果发现csv中有空行，自动跳过
             if Summary_Startdate <= float(l[0]) <= Summary_enddate:
                 raw_data.append(l)
                 a.append([time.strftime('%Y-%m-%d', time.localtime(float(l[0]))), l[5]])
@@ -168,8 +170,9 @@ def reminder_time(tt: int = 0, recent_day: int = 5):
     startdate: str = '1900-01-01'
     today = time.strftime('%Y-%m-%d')
     if hour >= tt or hour == 0:
-        today_detail = fit_summary(startdate=today, enddate=today, with_today=True)
         before_today_detail = fit_summary(startdate=startdate, enddate=today, with_today=False)
+        today_detail = fit_summary(startdate=today, enddate=today, with_today=True)
+
 
         print("今天的锻炼时间：%.2f 分钟" % (today_detail['ave_time']))
         print("平均锻炼时间：%.2f 分钟，共计 %.2f 分钟 " % (before_today_detail['ave_time'], before_today_detail['totally_time']))
@@ -178,7 +181,7 @@ def reminder_time(tt: int = 0, recent_day: int = 5):
 
 
 if __name__ == '__main__':
-
+    # help(write_record_csv)
 
     # wait_time(5)
     # start_train()
