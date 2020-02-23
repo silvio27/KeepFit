@@ -8,6 +8,7 @@ import csv
 path = 'exerice_recording.csv'
 starttime = time.time()
 
+
 def write_record_csv(reps, sets, course, duration):
     with open(path, 'a', newline='', encoding='utf-8-sig') as file:
         csv_file = csv.writer(file)
@@ -15,12 +16,22 @@ def write_record_csv(reps, sets, course, duration):
         data = [time.time(), time.strftime('%Y-%m-%d %H:%M:%S'), course, reps, sets, duration]
         csv_file.writerow(data)
 
-def record_by_hand(reps, sets, course, per_time):
-    write_record_csv(reps, sets, course, duration= reps * sets * per_time)
+
+def write_record_csv_amend(reps, sets, course='自由锻炼', per_rep_time=5, date=time.strftime('%Y-%m-%d')):
+    with open(path, 'a', newline='', encoding='utf-8-sig') as file:
+        csv_file = csv.writer(file)
+        # data = ['时间戳', '日期时间', '锻炼项目', '个数', '组数', '持续时间']
+        data = [str(date_to_timestramp(date)) + '.000000', date + ' 00:00:00', course, reps, sets,
+                reps * sets * per_rep_time]
+        csv_file.writerow(data)
+
+
+def record_by_hand(reps, sets, course='自由锻炼', per_rep_time='5'):
+    write_record_csv(reps, sets, course, duration=reps * sets * per_rep_time)
 
 
 # 日期格式转换为时间戳,True表示23:59:59
-def date_to_timestramp(date, whole_day: bool=False):
+def date_to_timestramp(date, whole_day: bool = False):
     # 判断是否为日期格式
     if is_valid_date(date):
         TtoS = int(time.mktime(time.strptime(date, "%Y-%m-%d")))
@@ -40,6 +51,7 @@ def is_valid_date(str_date):
         print("日期格式错误请重新输入")
         return False
 
+
 def wait_time(t1=0):
     if t1 == 0:
         input_time = input("请输入等待开始时间(默认为5秒):")
@@ -48,10 +60,8 @@ def wait_time(t1=0):
     time.sleep(t1)
 
 
-
-def start_train(reps: int=25, sets: int=2, um: int=1, dm: int=1, w: int=1, remind: int=10, breaktime: float=1, course: str= '自由练习'):
-
-
+def start_train(reps: int = 25, sets: int = 2, um: int = 1, dm: int = 1, w: int = 1, remind: int = 10,
+                breaktime: float = 1, course: str = '自由练习'):
     try:
         os.system('say "现在开始"')
 
@@ -103,7 +113,7 @@ def start_train(reps: int=25, sets: int=2, um: int=1, dm: int=1, w: int=1, remin
 # TODO 后续可以增加每项运动的统计分析 主要针对 手臂、腿、腰腹、背部
 # TODO 锻炼周期统计 开始结束时间，最近一周、一个月等 周期：3d 5d 7d 14d 30d etc
 
-def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool=True):
+def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool = True):
     # TODO 统计总的平均时间，包含和不包含今天，再用一个函数调用统计，本函数只做一段周期内的统计
     a = []  # 日期
     b = []  # 日期&单项计时
@@ -141,7 +151,7 @@ def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool=T
         workdays = len(dt)
         ave_time = totally_time / len(dt)
 
-        Work_data = dict(work_detail=work_detail, workdays=workdays, ave_time=ave_time, totally_time = totally_time)
+        Work_data = dict(work_detail=work_detail, workdays=workdays, ave_time=ave_time, totally_time=totally_time)
         return Work_data
 
 
@@ -150,9 +160,10 @@ def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool=T
 def reminder_do_more():
     pass
 
+
 # TODO 摘要自动显示还是手动，自动显示的话是根据时间判断还是如今天锻炼次数超过4次，不足4次的情况下也需要提醒
 
-def reminder_time(tt: int=0, recent_day: int=5):
+def reminder_time(tt: int = 0, recent_day: int = 5):
     hour = int(time.strftime('%H'))
     startdate: str = '1900-01-01'
     today = time.strftime('%Y-%m-%d')
@@ -198,4 +209,5 @@ if __name__ == '__main__':
     # 手动记录工作
     # write_record_csv(reps=20, sets=2, course='平卧抬膝', duration=3)
     # record_by_hand(6, 1, '标准引体向上', 5)
-
+    #手动记录，当不记得时间的情况下补录数据
+    # write_record_csv_amend(reps=100, sets=99, course='自由锻炼', per_rep_time=5, date='2020-02-22')
