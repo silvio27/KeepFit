@@ -15,6 +15,9 @@ def write_record_csv(reps, sets, course, duration):
         data = [time.time(), time.strftime('%Y-%m-%d %H:%M:%S'), course, reps, sets, duration]
         csv_file.writerow(data)
 
+def record_by_hand(reps, sets, course, per_time):
+    write_record_csv(reps, sets, course, duration= reps * sets * per_time)
+
 
 # 日期格式转换为时间戳,True表示23:59:59
 def date_to_timestramp(date, whole_day: bool=False):
@@ -165,17 +168,18 @@ def reminder_time(tt: int=0, recent_day: int=5):
 
 if __name__ == '__main__':
 
-    wait_time(5)
+
+    # wait_time(5)
     # start_train()
     # 俯卧撑系列
-    # start_train(12, 1, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
+    # start_train(12, 1, 1, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
     # 深蹲系列
-    start_train(25, 2, 1, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
+    # start_train(30, 2, 1, 1, 1, 10, 0.5, '标准深蹲') #窄距深蹲 单腿深蹲
     # 举腿系列
     # start_train(12, 2, 2, 2, 1, 10, 0.5, '平卧屈举腿')  #平卧抬膝3-35   平卧屈举腿3-30    # start_train(15, 2, 2, 2, 1, 10, 0.5, '悬垂屈膝')  #悬垂抬膝   悬垂屈举腿   悬垂蛙举腿   悬垂直举腿2-30
     # start_train(8, 1, 2, 4, 1, 10, 0.5, '平卧蛙举腿') #平卧蛙举腿3-25   平卧直举腿1-5 to 2-20
     # 桥系列
-    # start_train(30, 3, 1, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
+    # start_train(40, 2, 1, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
     # start_train (10, 2, 1, 1, 1, 10, 0.5, '直桥')
     # 引体向上
     # start_train(10, 2, 1, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
@@ -193,4 +197,5 @@ if __name__ == '__main__':
     # start_train(1, 1, 1, 1, 10, 1, 0, '测试用')
     # 手动记录工作
     # write_record_csv(reps=20, sets=2, course='平卧抬膝', duration=3)
+    # record_by_hand(6, 1, '标准引体向上', 5)
 
