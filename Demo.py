@@ -6,7 +6,7 @@ import time
 import csv
 
 path = 'exerice_recording.csv'
-starttime = time.time()
+# starttime = time.time()
 
 
 def write_record_csv(reps, sets, course, duration):
@@ -63,6 +63,9 @@ def wait_time(t1=0):
 
 def start_train(reps: int = 25, sets: int = 2, um: int = 1, dm: int = 1, w: int = 1, remind: int = 10,
                 breaktime: float = 1, course: str = '自由练习'):
+
+    global starttime
+    starttime = time.time()
     try:
         os.system('say "现在开始"')
 
@@ -179,9 +182,25 @@ def reminder_time(tt: int = 0, recent_day: int = 5):
         for i in before_today_detail['work_detail'][:recent_day]:
             print(i)
 
+def night_exe_list():
+    wait_time(10)
+    start_train(8, 2, 1, 1, 1, 10, 0.5, '标准俯卧撑')
+    wait_time(30)
+    start_train(12, 2, 1, 1, 1, 10, 0.5, '直桥')
+    wait_time(30)
+    start_train(12, 2, 2, 2, 1, 10, 0.5, '平卧屈举腿')
+    wait_time(30)
+    start_train(30, 2, 1, 1, 1, 10, 0.5, '短桥')
+    wait_time(30)
+    start_train(10, 1, 1, 1, 1, 10, 0.5, '标准俯卧撑')
+    wait_time(30)
+    start_train(12, 1, 2, 2, 1, 10, 0.5, '平卧屈举腿')
+    # TODO 暂停判断，是否结束，如果一段时间没有操作，则继续进程
+
 
 if __name__ == '__main__':
-    wait_time(10)
+    # wait_time(10)
+    # night_exe_list()
     # start_train()
     # 俯卧撑系列
     # start_train(8, 2, 1, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
@@ -194,11 +213,11 @@ if __name__ == '__main__':
     # 桥系列
     # start_train(40, 2, 1, 1, 1, 10, 0.5, '短桥')    # 断桥 #直桥3-40 高低桥3-30 顶桥2-25  半桥2-20  标准桥2-15 下行桥2-10 上行桥2-8  合桥2-6   铁板桥2-30
     # wait_time(30)
-    start_train(12, 2, 1, 1, 1, 10, 0.5, '直桥')
-    wait_time(30)
-    start_train(50, 3, 1, 1, 1, 10, 0.5, '短桥')
-    wait_time(30)
-    start_train(8, 1, 1, 1, 1, 10, 0.5, '标准俯卧撑')
+    # start_train(12, 2, 1, 1, 1, 10, 0.5, '直桥')
+    # wait_time(30)
+    # start_train(50, 3, 1, 1, 1, 10, 0.5, '短桥')
+    # wait_time(30)
+    # start_train(8, 1, 1, 1, 1, 10, 0.5, '标准俯卧撑')
     # 引体向上
     # start_train(10, 2, 1, 1, 1, 10, 0.5, '标准引体向上') #窄距引体向上') 单臂引体向上2-10
 
