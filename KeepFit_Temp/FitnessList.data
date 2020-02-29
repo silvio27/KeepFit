@@ -1,41 +1,134 @@
 {
-    '俯卧撑系列': {
-        '分类': 'A',  # TODO A组即先下后上
-        '清单': {
-            'level1': {
-                'name': '标准俯卧撑',
-                'sets': 2,
-                'repr': 10,
+    'saytime' :{
+        'A':
+         {
+            '下':1,
+            '坚持':1,
+            '起':1,
             },
-            'level2': {
-                'name': '窄距俯卧撑',
-                'sets': 2,
-                'repr': 10,
-            },
-            'level3': {
-                'name': '单臂俯卧撑',
-                'sets': 2,
-                'repr': 10,
-            },
-        }
+         'B':
+         {
+            '起':1,
+            '坚持':1,
+            '下':1,
+         },
+          'C':
+         {
+            '起':1,
+            '坚持':1,
+            '下':2,
+         },
+     },
+     'series':{
+        '俯卧撑系列': {
+            'work_type': 'A',
+            # TODO A组即先下后上
+            'level': {
+                    'level1': {
+                        'name': '标准俯卧撑',
+                        'sets': 1,
+                        'reps': 10,
+                    },
+                    'level2': {
+                        'name': '标准俯卧撑',
+                        'sets': 2,
+                        'reps': 10,
+                    },
+                    'level3': {
+                        'name': '窄距俯卧撑',
+                        'sets': 2,
+                        'reps': 10,
+                    },
+                    'level4': {
+                        'name': '单臂俯卧撑',
+                        'sets': 2,
+                        'reps': 10,
+                    },
+                }
 
-    },
-    '深蹲系列':
-        {
-            'level1': {
-                'name': '标准深蹲',
-                'sets': 2,
-                'repr': 50,
-            },
-            'level2': {
-                'name': '窄距深蹲',
-                'sets': 2,
-                'repr': 40,
-            },
-            'level3': {
-                'name': '单腿深蹲',
-                'sets': 2,
-                'repr': 20,
-            },
         },
+        '深蹲系列':{
+            'work_type': 'A',
+            # TODO A组即先下后上
+            'level': {
+                    'level1': {
+                        'name': '标准深蹲',
+                        'sets': 1,
+                        'reps': 50,
+                    },
+                    'level2': {
+                        'name': '窄距深蹲',
+                        'sets': 1,
+                        'reps': 40,
+                    },
+                    'level3': {
+                        'name': '单腿深蹲',
+                        'sets': 2,
+                        'reps': 20,
+                    },
+                },
+        },
+        '举腿系列':{
+            'work_type': 'C',
+            'level': {
+                    'level1': {
+                        'name': '平卧屈举腿',
+                        'sets': 2,
+                        'reps': 12,
+                    },
+                    'level2': {
+                        'name': '平卧屈举腿',
+                        'sets': 2,
+                        'reps': 20,
+                    },
+                    'level3': {
+                        'name': '平卧屈举腿',
+                        'sets': 2,
+                        'reps': 30,
+                    },
+                },
+        },
+        '桥系列':{
+            'work_type': 'B',
+            # TODO A组即先下后上
+            'level': {
+                    'level1': {
+                        'name': '短桥',
+                        'sets': 2,
+                        'reps': 50,
+                    },
+                    'level2': {
+                        'name': '直桥',
+                        'sets': 2,
+                        'reps': 12,
+                    },
+                    'level3': {
+                        'name': '直桥',
+                        'sets': 2,
+                        'reps': 20,
+                    },
+                },
+        },
+        '引体向上系列':{
+            'work_type': 'B',
+            # TODO A组即先下后上
+            'level': {
+                    'level1': {
+                        'name': '标准引体向上',
+                        'sets': 2,
+                        'reps': 12,
+                    },
+                    'level2': {
+                        'name': '窄距引体向上',
+                        'sets': 2,
+                        'reps': 12,
+                    },
+                    'level3': {
+                        'name': '单臂引体向上',
+                        'sets': 2,
+                        'reps': 8,
+                    },
+                },
+        },
+    },
 }

@@ -14,4 +14,4 @@ from KeepFit_Temp.FitnessManagement import *
 
 if __name__ == '__main__':
     FM = FitnessManagement()
-    FM.run()
+    # FM.run()
