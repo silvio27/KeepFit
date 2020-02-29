@@ -62,6 +62,7 @@ class FitnessManagement(object):
         self.work_list =[]
         self.project_select = '俯卧撑系列'
         self.level_select = 'level1'
+        self.break_time = 25
 
 
     def __str__(self):
@@ -232,7 +233,7 @@ class FitnessManagement(object):
             if s + 1 < sets:
                 os.system('say "休闲30秒"')
                 # TODO 修改休闲时间
-                time.sleep(1)
+                time.sleep(self.break_time)
                 print('')
                 os.system(f'say "准备开始第{s + 2}组"')
 
@@ -247,11 +248,11 @@ class FitnessManagement(object):
         # self.reminder_time()
 
 
-    def train_set(self, project='俯卧撑系列', level = 1, break_time = 30):
+    def train_set(self, project='俯卧撑系列', level = 1):
         self.project_select = project
         self.level_select = 'level' + str(level)
         self.start_training()
-        time.sleep(break_time)
+        time.sleep(self.break_time)
 
     def morning_training(self):
         os.system('say "Start"')
@@ -281,15 +282,16 @@ class FitnessManagement(object):
 
 
     def run(self):
+        self.show_all_dict_data()
         # pass
         # os.system('say "Start"')
         # time.sleep(10)
-        self.train_set(project='俯卧撑系列', level=1)
+        # self.train_set(project='俯卧撑系列', level=1)
         # self.train_set(project='俯卧撑系列', level=1)
         # self.train_set(project='举腿系列', level=1)
         # self.train_set(project='桥系列', level=2)
         # self.train_set(project='深蹲系列', level=1)
-        # self.night_training()
+        self.night_training()
         # self.morning_training()
         self.reminder_time()
 
@@ -300,5 +302,5 @@ class FitnessManagement(object):
 
 if __name__ == '__main__':
     FM = FitnessManagement()
-    # FM.run()
-    FM.show_all_dict_data()
+    FM.run()
+    # FM.show_all_dict_data()
