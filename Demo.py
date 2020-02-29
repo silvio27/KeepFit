@@ -67,7 +67,8 @@ def start_train(reps: int = 25, sets: int = 2, um: int = 1, dm: int = 1, w: int 
     global starttime
     starttime = time.time()
     try:
-        os.system('say "现在开始"')
+        # os.system('say "现在开始"')
+        os.system(f'say "～开始{course},{sets}组{reps}个"')
 
         global r
         global t
@@ -154,7 +155,10 @@ def fit_summary(startdate="1900-01-01", enddate="2099-12-31", with_today: bool =
 
         work_detail = b
         workdays = len(dt)
-        ave_time = totally_time / len(dt)
+        if workdays != 0:  # 如果今天没有锻炼，避免由于统计时工作天数位0而报错
+            ave_time = totally_time / len(dt)
+        else:
+            ave_time = 0
 
         Work_data = dict(work_detail=work_detail, workdays=workdays, ave_time=ave_time, totally_time=totally_time)
         return Work_data
@@ -197,10 +201,33 @@ def night_exe_list():
     start_train(12, 1, 2, 2, 1, 10, 0.5, '平卧屈举腿')
     # TODO 暂停判断，是否结束，如果一段时间没有操作，则继续进程
 
+def morning_exe_list_easy():
+
+    wait_time(10)
+    # for i in range(2):
+    #     start_train(10, 1, 1, 1, 1, 100, 0.5, '标准俯卧撑')
+    #     # wait_time(30)
+    #     start_train(12, 1, 1, 1, 1, 100, 0.5, '直桥')
+    #     # wait_time(30)
+    #     start_train(12, 1, 2, 2, 1, 100, 0.5, '平卧屈举腿')
+    #
+    # start_train(30, 1, 1, 1, 1, 15, 0.5, '标准深蹲')
+    start_train(30, 1, 1, 1, 1, 15, 0.5, '窄距深蹲')
+
+
+# TODO 暂停判断，是否结束，如果一段时间没有操作，则继续进程def night_exe_list_easy():
+#         wait_time(10)
+#         for i in range(2):
+#             # wait_time(30)
+#             start_train(12, 1, 1, 1, 1, 10, 0.5, '直桥')
+#             # wait_time(30)
+#             start_train(12, 1, 2, 2, 1, 10, 0.5, '平卧屈举腿')
+#         start_train(8, 1, 1, 1, 1, 10, 0.5, '标准俯卧撑')
+#         start_train(30, 1, 1, 1, 1, 10, 0.5, '窄距深蹲')
 
 if __name__ == '__main__':
     # wait_time(10)
-    # night_exe_list()
+    # morning_exe_list_easy()
     # start_train()
     # 俯卧撑系列
     # start_train(8, 2, 1, 1, 1, 10, 0.5, '标准俯卧撑')  #标准俯卧撑2-12 窄距俯卧撑 #单臂俯卧撑
