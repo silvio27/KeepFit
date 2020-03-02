@@ -269,12 +269,18 @@ class FitnessManagement(object):
 
 
     def night_training(self):
-        self.train_set(project='举腿系列', level=1)
-        self.train_set(project='桥系列', level=2)
-        pass
-        # os.system('say "Start"')
-        # time.sleep(10)
-        # self.train_set(project='俯卧撑系列', level=1)
+        os.system('say "Start"')
+        time.sleep(10)
+        # self.train_set(project='深蹲系列', level=2)
+        # for i in range(2):
+        #     self.train_set(project='俯卧撑系列', level=1)
+        #     self.train_set(project='举腿系列', level=1)
+        #     self.train_set(project='桥系列', level=2)
+        self.train_set(project='俯卧撑系列', level=1)
+        self.train_set(project='桥系列', level=1)
+        self.train_set(project='深蹲系列', level=1)
+
+
         # self.train_set(project='俯卧撑系列', level=1)
         # self.train_set(project='举腿系列', level=1)
         # self.train_set(project='桥系列', level=2)
@@ -282,7 +288,7 @@ class FitnessManagement(object):
 
 
     def run(self):
-        self.show_all_dict_data()
+        # self.show_all_dict_data()
         # pass
         # os.system('say "Start"')
         # time.sleep(10)
@@ -300,6 +306,14 @@ class FitnessManagement(object):
         print('Game Start')
         print('''俯卧撑系列\深蹲系列\举腿系列\桥系列\引体向上系列''')
 
+
+"""
+俯卧撑系列  level1:标准俯卧撑 1 12 	level2:标准俯卧撑 2 10 	level3:窄距俯卧撑 2 10 	level4:单臂俯卧撑 2 10 	
+深蹲系列    level1:标准深蹲 1 50 	level2:窄距深蹲 1 40 	level3:单腿深蹲 2 20 	
+举腿系列    level1:平卧屈举腿 1 12 	level2:平卧屈举腿 2 20 	level3:平卧屈举腿 2 30 	
+桥系列        level1:短桥 1 50 	level2:直桥 1 12 	level3:直桥 2 20 	
+引体向上系列 level1:标准引体向上 1 12 	level2:窄距引体向上 2 12 	level3:单臂引体向上 2 8 	
+"""
 if __name__ == '__main__':
     FM = FitnessManagement()
     FM.run()

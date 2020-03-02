@@ -73,17 +73,17 @@
             'level': {
                     'level1': {
                         'name': '平卧屈举腿',
-                        'sets': 2,
+                        'sets': 1,
                         'reps': 12,
                     },
                     'level2': {
                         'name': '平卧屈举腿',
-                        'sets': 2,
+                        'sets': 1,
                         'reps': 20,
                     },
                     'level3': {
                         'name': '平卧屈举腿',
-                        'sets': 2,
+                        'sets': 1,
                         'reps': 30,
                     },
                 },
@@ -94,12 +94,12 @@
             'level': {
                     'level1': {
                         'name': '短桥',
-                        'sets': 2,
+                        'sets': 1,
                         'reps': 50,
                     },
                     'level2': {
                         'name': '直桥',
-                        'sets': 2,
+                        'sets': 1,
                         'reps': 12,
                     },
                     'level3': {
