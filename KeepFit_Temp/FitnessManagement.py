@@ -222,6 +222,7 @@ class FitnessManagement(object):
         course = self.work_list['level'][self.level_select]['name']
         reps = self.work_list['level'][self.level_select]['reps']
         sets = self.work_list['level'][self.level_select]['sets']
+        print(f'say "～开始{course},{sets}组{reps}个"')
         os.system(f'say "～开始{course},{sets}组{reps}个"')
         for s in range(sets):
             for r in range(reps):
@@ -257,6 +258,7 @@ class FitnessManagement(object):
     def morning_training(self):
         os.system('say "Start"')
         time.sleep(10)
+        self.train_set(project='深蹲系列', level=2)
         for i in range(2):
             self.train_set(project='俯卧撑系列', level=1)
             self.train_set(project='举腿系列', level=1)
@@ -264,19 +266,20 @@ class FitnessManagement(object):
 
         self.train_set(project='桥系列', level=1)
         self.train_set(project='深蹲系列', level=1)
-        self.train_set(project='深蹲系列', level=2)
+
 
 
 
     def night_training(self):
         os.system('say "Start"')
+        self.break_time = 10
         time.sleep(10)
-        # self.train_set(project='深蹲系列', level=2)
-        # for i in range(2):
-        #     self.train_set(project='俯卧撑系列', level=1)
-        #     self.train_set(project='举腿系列', level=1)
-        #     self.train_set(project='桥系列', level=2)
         self.train_set(project='俯卧撑系列', level=1)
+        self.train_set(project='深蹲系列', level=2)
+        for i in range(2):
+            self.train_set(project='俯卧撑系列', level=1)
+            self.train_set(project='举腿系列', level=1)
+            self.train_set(project='桥系列', level=2)
         self.train_set(project='桥系列', level=1)
         self.train_set(project='深蹲系列', level=1)
 
