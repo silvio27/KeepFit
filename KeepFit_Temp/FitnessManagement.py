@@ -12,6 +12,7 @@ import csv
 import time
 import os
 
+
 class DealWithData(object):
     '''数据处理'''
 
@@ -37,7 +38,6 @@ class DealWithData(object):
             data = list(f_csv)
         return data
 
-
     def file_write(self, path, data=''):
         with open(path, 'a+', encoding='UTF-8') as f:
             f.write(str(data))
@@ -57,13 +57,12 @@ class FitnessManagement(object):
         self.fitness_record_path = 'FitnessRecord.data'
         # self.fitness_record_path = 'Tempdata.data'
         self.fitness_list = {}
-        self.fitness_record =[]
+        self.fitness_record = []
         self.new_record = ''
-        self.work_list =[]
+        self.work_list = []
         self.project_select = '俯卧撑系列'
         self.level_select = 'level1'
         self.break_time = 25
-
 
     def __str__(self):
         return '健身管理系统'
@@ -77,18 +76,16 @@ class FitnessManagement(object):
             else:
                 print(f'{k}:{v}', end='\n')
 
-
     def get_all_dict_data1(self, data, i=0):
 
-        for f,v in data.items():
-            print(f,end = ' ')
-            for k,m in v['level'].items():
-                print(k, end = ':')
+        for f, v in data.items():
+            print(f, end=' ')
+            for k, m in v['level'].items():
+                print(k, end=':')
                 for n in m.values():
-                    print( str(n), end =' ')
+                    print(str(n), end=' ')
                 print('', end='\t')
             print('')
-
 
     def show_all_dict_data(self):
         self.load_fitness_list()
@@ -194,7 +191,7 @@ class FitnessManagement(object):
         dD = DealWithData()
         dD.file_write_csv(self.fitness_record_path, data)
 
-    def amended_fitness_record(self,course='自由锻炼', reps=12, sets=1, duration=''):
+    def amended_fitness_record(self, course='自由锻炼', reps=12, sets=1, duration=''):
         # TODO 日期可能会存在格式错误的问题，错误的情况下反馈None，需要继续测试
         date = input('输入日XXXX-XX-XX Enter=Today:') or time.strftime('%Y-%m-%d')
         course = input(f'选择课程在[{course}]:') or course
@@ -203,7 +200,8 @@ class FitnessManagement(object):
         duration = round(int(reps) * int(sets) * 5 / 60, 2)
         duration = input(f'持续时间:[{duration}]') or duration
         print([str(self.date_to_timestramp(date)) + '.000000', date + ' 00:00:00', course, reps, sets, duration])
-        self.new_record = [str(self.date_to_timestramp(date)) + '.000000', date + ' 00:00:00', course, reps, sets, duration]
+        self.new_record = [str(self.date_to_timestramp(date)) + '.000000', date + ' 00:00:00', course, reps, sets,
+                           duration]
         self.add_fitness_record()
 
     def reps_say_count(self):
@@ -226,7 +224,7 @@ class FitnessManagement(object):
         os.system(f'say "～开始{course},{sets}组{reps}个"')
         for s in range(sets):
             for r in range(reps):
-                print(r+1, end=' ')
+                print(r + 1, end=' ')
                 self.reps_say_count()
                 if r + 1 < reps:
                     if (r + 1) % 10 == 0 and r + 1 < reps:
@@ -248,8 +246,7 @@ class FitnessManagement(object):
         print('数据已记录')
         # self.reminder_time()
 
-
-    def train_set(self, project='俯卧撑系列', level = 1):
+    def train_set(self, project='俯卧撑系列', level=1):
         self.project_select = project
         self.level_select = 'level' + str(level)
         self.start_training()
@@ -267,15 +264,12 @@ class FitnessManagement(object):
         self.train_set(project='桥系列', level=1)
         self.train_set(project='深蹲系列', level=1)
 
-
-
-
     def night_training(self):
         os.system('say "Start"')
         self.break_time = 10
         time.sleep(10)
-        self.train_set(project='俯卧撑系列', level=1)
-        self.train_set(project='深蹲系列', level=2)
+        # self.train_set(project='俯卧撑系列', level=1)
+        # self.train_set(project='深蹲系列', level=2)
         for i in range(2):
             self.train_set(project='俯卧撑系列', level=1)
             self.train_set(project='举腿系列', level=1)
@@ -283,12 +277,10 @@ class FitnessManagement(object):
         self.train_set(project='桥系列', level=1)
         self.train_set(project='深蹲系列', level=1)
 
-
         # self.train_set(project='俯卧撑系列', level=1)
         # self.train_set(project='举腿系列', level=1)
         # self.train_set(project='桥系列', level=2)
         # self.train_set(project='深蹲系列', level=1)
-
 
     def run(self):
         # self.show_all_dict_data()
